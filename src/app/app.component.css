@@ -1,0 +1,59 @@
+.job-title{
+    padding: 1rem 0.5rem;
+    font-size: medium;
+    font-weight: 600;
+}
+.product-list-detail i{
+    margin-right: .5rem;
+}
+
+.company-logo img{
+    height: 100px;
+}
+.job-description{
+    overflow-y:hidden;
+}
+.row{
+    padding: 0.5rem;
+}
+.work-exp-and-skills{
+    align-items: center;
+}
+.work-exp-and-skills div:not(:last-child){
+    border-right: 1px solid #eee;
+    height: 80px;
+}
+.job-work-experience{
+    flex-direction: column;
+}
+.job-posted-time-update{
+    justify-content: center;
+}
+.job-list-right-section{
+    flex-direction: column;
+}
+.job-skills, .job-posted-time-update, .job-list-right-section, .job-work-experience{
+    align-items: center;
+}
+.job-list{
+    box-shadow: 2px 0 20px #ddd;
+    border-radius: 10px;
+}
+
+.table-wrapper ::ng-deep .p-inplace .p-inplace-display{
+    cursor: auto;
+    display: block;
+}
+.table-wrapper ::ng-deep .p-inplace .p-inplace-display a:hover{
+    cursor: pointer;
+}
+.job-location{
+    font-weight: 500;
+}
+
+p-overlayPanel ::ng-deep .p-overlaypanel-content{
+    width: 350px;
+}
+p-overlayPanel ::ng-deep > div{
+    margin-top: -40px;
+}
