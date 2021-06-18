@@ -50,10 +50,3 @@
 .job-location{
     font-weight: 500;
 }
-
-p-overlayPanel ::ng-deep .p-overlaypanel-content{
-    width: 350px;
-}
-p-overlayPanel ::ng-deep > div{
-    margin-top: -40px;
-}

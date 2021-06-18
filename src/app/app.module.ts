@@ -12,12 +12,15 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {TableModule} from 'primeng/table';
 import {BadgeModule} from 'primeng/badge';
+import {SliderModule} from 'primeng/slider';
 
 import { AppComponent } from './app.component';
+import { AdvanceFilterComponent } from './advance-filter/advance-filter.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AdvanceFilterComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,8 @@ import { AppComponent } from './app.component';
     OverlayPanelModule,
     BrowserAnimationsModule,
     TableModule,
-    BadgeModule
+    BadgeModule,
+    SliderModule,
   ],
   providers: [JsonDataService],
   bootstrap: [AppComponent]

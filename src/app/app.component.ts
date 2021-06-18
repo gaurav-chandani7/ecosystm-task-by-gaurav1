@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ComponentFactoryResolver, Injector, Type, ViewChild, ViewContainerRef } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { JsonDataService } from './jsondataservice';
 import {SelectItem} from 'primeng/api';
@@ -20,14 +20,17 @@ export class AppComponent {
   readFullContentFlag = {};
   isAdvanceFilterMode: boolean = false;
   cities: any[] = []
-  selectedLocation: any;
   @ViewChild("dv")dataView: DataView;
   filterColumns: string;
+  @ViewChild('advanceFiltersContainer',{read:ViewContainerRef})
+  advFiltComp:ViewContainerRef;
 
-  constructor(private jsonDataService: JsonDataService) { }
+
+  constructor(private vcr: ViewContainerRef,private cfr: ComponentFactoryResolver, private injector: Injector, private jsonDataService: JsonDataService) { }
 
   ngAfterViewInit(){
     this.dataView.filterBy = this.filterColumns;
+    console.log(this.dataView)
   }
 
   ngOnInit() {
@@ -57,6 +60,9 @@ export class AppComponent {
     )
     this.jobs.forEach(ele=>{
       ele['location'] = ele['placeholders'][2]['label'];
+      let yearRange:string = ele['placeholders'][0]['label'].split(' ')[0];
+      let yearArr = yearRange.split('-');
+      ele['expStartYr'] = yearArr[0];
     })
     });
     this.sortOptions = [
@@ -116,18 +122,33 @@ export class AppComponent {
   myFilter(str){
     this.dataView.filter(str.target.value,'contains')
   }
-  applyFilter(str:string){
-    if(str === 'loc'){
-      this.dataView.filterBy = "location"
-      this.dataView.filter(this.selectedLocation.name,'contains')
+  applyFilter(obj:any){
+    console.log(obj)
+    if(obj.type === 'location'){
+      this.dataView.filterBy = "location";
+      this.dataView.filter(obj.data,'contains')
+    }else if (obj.type === 'experience'){
+      this.dataView.filterBy = "expStartYr";
+      this.dataView.filter(obj.data,'gte')
     }
     console.log(this.dataView)
   }
   removeFilter(str:string){
-    if(str === 'loc'){
-      this.dataView.filterBy = this.filterColumns;
-      this.dataView.filter('','contains')
-    }
+    this.dataView.filterBy = this.filterColumns;
+    this.dataView.filter('','contains')
     console.log(this.dataView)
+  }
+  async loadFiltersComponent(){
+    this.advFiltComp.clear();
+    const {AdvanceFilterComponent} = await import('./advance-filter/advance-filter.component');
+    let compAdvFilt = this.advFiltComp.createComponent(this.cfr.resolveComponentFactory(AdvanceFilterComponent));
+    compAdvFilt.instance.cities = this.cities;
+    compAdvFilt.instance.isAdvanceFilterMode = this.isAdvanceFilterMode;
+    compAdvFilt.instance.filterAddHandler.subscribe(data=>{
+      this.applyFilter(data)
+    });
+    compAdvFilt.instance.filterRemoveHandler.subscribe(data=>{
+      this.removeFilter(data)
+    });
   }
 }
