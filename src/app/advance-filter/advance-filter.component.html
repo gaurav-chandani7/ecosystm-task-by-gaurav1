@@ -1,0 +1,27 @@
+<div class="row" *ngIf="isAdvanceFilterMode" style="width: 300px;justify-content: space-evenly;">
+    <p-button label="Location" (click)="op.toggle($event)" [badge]="selectedLocation!=undefined ? 1:0" styleClass="p-mr-2" class="p-col-3"></p-button>
+    <div class="p-col-2"></div>
+    <p-button label="Experience" styleClass="p-mr-2" (click)="opExp.toggle($event)" [badge]="experienceFilter > 0 ? 1 : ''" class="p-col-3"></p-button>
+    <p-overlayPanel #op>
+        <ng-template pTemplate>
+            <p-table [value]="cities" selectionMode="single" [(selection)]="selectedLocation" (onRowSelect)="emitToParent(1,'location')" (onRowUnselect)="emitToParent(2,'location')">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-city>
+                    <tr [pSelectableRow]="rowData">
+                        <td>{{city.name}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </ng-template>
+    </p-overlayPanel>
+    <p-overlayPanel #opExp>
+        <ng-template pTemplate>
+            <h5>Min Exp: {{experienceFilter}} Yr</h5>
+            <p-slider [(ngModel)]="experienceFilter" (onChange)="emitToParent(1,'experience')" [min]="0" [max]="7"></p-slider>
+        </ng-template>
+    </p-overlayPanel>
+</div>
